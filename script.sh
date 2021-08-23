@@ -40,7 +40,7 @@ while test $# -gt 0; do
             echo "-r, --regexp       specify a regexp to filter source data"
             exit 0
         ;;
-        -s)
+        -s|--source)
             shift
             if test $# -gt 0; then
                 export SOURCE=$1
@@ -50,7 +50,7 @@ while test $# -gt 0; do
             fi
             shift
         ;;
-        -r)
+        -r|--regexp)
             shift
             if test $# -gt 0; then
                 export REGEX_EXP=$1
