@@ -75,3 +75,61 @@ do
     create_dir_if_doesnt_exist ${DIR}
     rm -rf ${DIR}/*
 done
+
+REGEX_URL='(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]'
+REGEX_CSV_FILE='.+(\.csv)$'
+if [[ $SOURCE =~ $REGEX_URL ]]
+then
+    wget $SOURCE -P $SOURCE_DIR_PATH
+elif [[ $SOURCE =~ $REGEX_CSV_FILE ]]
+then
+    cp $SOURCE $SOURCE_DIR_PATH
+else
+    FILE_EXIST=`ls -1 *.csv 2>/dev/null | wc -l`
+    if [ $FILE_EXIST != 0 ]
+    then
+        cp *.csv $SOURCE_DIR_PATH
+    fi
+fi
+
+CSV_FILE=$(ls -t $SOURCE_DIR_PATH | grep .csv | head -1)
+echo $CSV_FILE
+if test -z "$CSV_FILE"
+then
+    echo "error no file to analize"
+    exit 1
+fi
+
+SOURCE_FILE_PATH=$SOURCE_DIR_PATH$CSV_FILE
+DEST_FILE_PATH=$DEST_DIR_PATH"output.txt"
+
+LINES=0
+if test -z "$REGEX_EXP"
+then
+    cat $SOURCE_FILE_PATH | csvlook > $DEST_FILE_PATH
+    LINES=$(cat $SOURCE_FILE_PATH | csvlook | wc -l) #TODO zapisać do zmiennej i na niej liczyć ilość linii
+else
+    grep $REGEX_EXP $SOURCE_FILE_PATH | csvlook > $DEST_FILE_PATH
+    LINES=$(grep $REGEX_EXP $SOURCE_FILE_PATH | csvlook | wc -l)
+    
+fi
+
+OWNER=$(stat -c '%U' $0)
+SIZE=$(stat -c '%s' $0)
+SOURCE=$(pwd)
+COLUMN_NAMES=$(cat $SOURCE_FILE_PATH | head -n 1)
+
+echo "source: $SOURCE" >> $DEST_FILE_PATH
+echo "owner: $OWNER" >> $DEST_FILE_PATH
+echo "size: $SIZE bytes" >> $DEST_FILE_PATH
+echo "output lines: $LINES" >> $DEST_FILE_PATH
+echo "column names: $COLUMN_NAMES" >> $DEST_FILE_PATH
+
+cat $DEST_FILE_PATH
+
+: '
+    TODO:
+        - refactor,
+        - error handling,
+        - tests,
+'
