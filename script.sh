@@ -106,8 +106,9 @@ CSV_FILE=$(ls -t $SOURCE_DIR_PATH | grep .csv | head -1)
 echo $CSV_FILE
 if test -z "$CSV_FILE"
 then
-    echo "error: no file to analize"
-    create_error_log "error: no file to analize in source dir"
+    $ERROR_MESSAGE="error: no file to analize in source dir"
+    echo $ERROR_MESSAGE
+    create_error_log $ERROR_MESSAGE
     exit 1
 fi
 
