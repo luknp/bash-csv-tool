@@ -1,6 +1,6 @@
 # bash-csv-tool
 
-A simple bash script to play with csv files.
+A simple bash script to work with csv files.
 
 ## Example run
 
