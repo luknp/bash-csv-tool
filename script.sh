@@ -3,6 +3,16 @@
 export SOURCE=""
 export REGEX_EXP=""
 
+function create_error_log(){
+	NOW_DATE=`date +"%d-%m-%Y"`
+	FILE_NAME="name"
+	LOG_FILE_NAME="log-error-${FILE_NAME}-${NOW_DATE}.txt"
+
+	ERROR_LOG_BEGIN=`date '+%H:%M:%S'`" "
+	ERROR_LOG_MESSAGE=$ERROR_LOG_BEGIN$1
+	echo $ERROR_LOG_MESSAGE >> $LOG_FILE_NAME
+}
+
 function create_dir_if_doesnt_exist(){
     if [[ ! -d $1 ]]
     then
@@ -96,7 +106,8 @@ CSV_FILE=$(ls -t $SOURCE_DIR_PATH | grep .csv | head -1)
 echo $CSV_FILE
 if test -z "$CSV_FILE"
 then
-    echo "error no file to analize"
+    echo "error: no file to analize"
+    create_error_log "error: no file to analize in source dir"
     exit 1
 fi
 
