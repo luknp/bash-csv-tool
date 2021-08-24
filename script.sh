@@ -12,7 +12,6 @@ function create_error_log(){
     MESSAGE="$*"
 	ERROR_LOG_CONTENT=$ERROR_LOG_BEGIN$MESSAGE
 	echo $ERROR_LOG_CONTENT >> $LOG_FILE_NAME
-    cat $LOG_FILE_NAME
 }
 
 function create_dir_if_doesnt_exist(){
