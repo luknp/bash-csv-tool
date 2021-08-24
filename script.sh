@@ -4,14 +4,14 @@ export SOURCE=""
 export REGEX_EXP=""
 
 function create_error_log(){
-	NOW_DATE=`date +"%d-%m-%Y"`
-	FILE_NAME="name"
-	LOG_FILE_NAME="log-error-${FILE_NAME}-${NOW_DATE}.txt"
+    NOW_DATE=`date +"%d-%m-%Y"`
+    FILE_NAME="name"
+    LOG_FILE_NAME="log-error-${FILE_NAME}-${NOW_DATE}.txt"
 
-	ERROR_LOG_BEGIN=`date '+%H:%M:%S'`" "
+    ERROR_LOG_BEGIN=`date '+%H:%M:%S'`" "
     MESSAGE="$*"
-	ERROR_LOG_CONTENT=$ERROR_LOG_BEGIN$MESSAGE
-	echo $ERROR_LOG_CONTENT >> $LOG_FILE_NAME
+    ERROR_LOG_CONTENT=$ERROR_LOG_BEGIN$MESSAGE
+    echo $ERROR_LOG_CONTENT >> $LOG_FILE_NAME
 }
 
 function create_dir_if_doesnt_exist(){
@@ -124,7 +124,6 @@ then
 else
     grep $REGEX_EXP $SOURCE_FILE_PATH | csvlook > $DEST_FILE_PATH
     LINES=$(grep $REGEX_EXP $SOURCE_FILE_PATH | csvlook | wc -l)
-    
 fi
 
 OWNER=$(stat -c '%U' $0)
