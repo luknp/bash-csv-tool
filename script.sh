@@ -9,8 +9,10 @@ function create_error_log(){
 	LOG_FILE_NAME="log-error-${FILE_NAME}-${NOW_DATE}.txt"
 
 	ERROR_LOG_BEGIN=`date '+%H:%M:%S'`" "
-	ERROR_LOG_MESSAGE=$ERROR_LOG_BEGIN$1
-	echo $ERROR_LOG_MESSAGE >> $LOG_FILE_NAME
+    MESSAGE="$*"
+	ERROR_LOG_CONTENT=$ERROR_LOG_BEGIN$MESSAGE
+	echo $ERROR_LOG_CONTENT >> $LOG_FILE_NAME
+    cat $LOG_FILE_NAME
 }
 
 function create_dir_if_doesnt_exist(){
@@ -106,7 +108,7 @@ CSV_FILE=$(ls -t $SOURCE_DIR_PATH | grep .csv | head -1)
 echo $CSV_FILE
 if test -z "$CSV_FILE"
 then
-    $ERROR_MESSAGE="error: no file to analize in source dir"
+    ERROR_MESSAGE='error: no file to analize in source dir'
     echo $ERROR_MESSAGE
     create_error_log $ERROR_MESSAGE
     exit 1
